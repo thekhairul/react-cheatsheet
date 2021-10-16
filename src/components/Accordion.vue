@@ -32,41 +32,38 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from "vue";
+import { defineComponent, ref, watch } from 'vue'
 
 export default defineComponent({
   props: {
     title: {
       type: String,
-      default: "Accordion Title",
+      default: 'Accordion Title',
     },
   },
   setup({ title }) {
-    const isOpen = ref(false);
-    const accordionTitle = ref(null);
-    const accordionBody = ref(null);
-    const maxHeight = ref(0);
-    let titleHeight = 0;
+    const isOpen = ref(false)
+    const accordionTitle = ref(null)
+    const accordionBody = ref(null)
+    const maxHeight = ref(0)
+    let titleHeight = 0
     watch(isOpen, () => {
       maxHeight.value = isOpen.value
         ? titleHeight + accordionBody.value.scrollHeight
-        : titleHeight;
-    });
+        : titleHeight
+    })
     onMounted(() => {
-      titleHeight = accordionTitle.value.scrollHeight;
-      maxHeight.value = titleHeight;
-    });
-    return { title, isOpen, accordionTitle, accordionBody, maxHeight };
+      titleHeight = accordionTitle.value.scrollHeight
+      maxHeight.value = titleHeight
+    })
+    return { title, isOpen, accordionTitle, accordionBody, maxHeight }
   },
-});
+})
 </script>
 
 <style scoped>
 .accordion {
-  transition: max-height 0.3s ease-in-out, transform 0.3s ease-in;
+  transition: max-height 0.3s ease-in-out;
   will-change: max-height;
-}
-.accordion.touched {
-  transform: scale(1.1);
 }
 </style>
