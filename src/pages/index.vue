@@ -1,36 +1,47 @@
 <template>
   <div>
-    <!-- TODO: implement listing into categories -->
-    <Accordion v-for="sheet in cheatsheets" :key="sheet" :title="sheet">
-      <keep-alive>
-        <component :is="sheet" />
-      </keep-alive>
-    </Accordion>
+    <div v-for="category in Object.keys(sheetCategories)" :key="category">
+      {{ category }}
+      <Accordion v-for="title in sheetCategories[category]" :key="title" :title="title">
+        <keep-alive>
+          <component :is="`${category}_${title}`" />
+        </keep-alive>
+      </Accordion>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent, ref } from "vue";
+import { defineComponent, defineAsyncComponent } from 'vue'
 
-const sheets = [];
-const components = {};
+const sheets = []
+const sheetCategories = {}
+const components = {}
 
-const modules = import.meta.glob("../sheets/*.md");
+const modules = import.meta.glob('../sheets/*.md')
 
 for (const path in modules)
-  sheets.push(path.replace("../sheets/", "").split(".")[0]);
+  sheets.push(path.replace('../sheets/', '').split('.')[0])
 
 sheets.forEach((sheet) => {
+  // Extract cheatsheet categories from filename
+  const [category, title] = sheet.split('_')
+  if (sheetCategories[category])
+    sheetCategories[category].push(title)
+
+  else
+    sheetCategories[category] = [title]
+
+  // register components dynamically
   components[sheet] = defineAsyncComponent(
-    () => import(`../sheets/${sheet}.md`)
-  );
-});
+    () => import(`../sheets/${sheet}.md`),
+  )
+})
 
 export default defineComponent({
   components,
   setup() {
-    const cheatsheets = ref(sheets);
-    return { cheatsheets };
+    return { sheetCategories }
   },
-});
+})
 </script>
