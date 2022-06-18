@@ -38,10 +38,10 @@
         <Accordion
           v-for="title in sheetCategories[category]"
           :key="title"
-          :title="title"
+          :title="title.split('-')[0]"
           :class="{
             'outline-solid-purple-700':
-              searchQuery && title.includes(searchQuery),
+              searchQuery && title.match(new RegExp(searchQuery, 'gi')),
           }"
         >
           <keep-alive>
@@ -58,7 +58,7 @@ import { defineComponent, defineAsyncComponent } from 'vue'
 
 const sheets = []
 const sheetCategories: {[key: string]: string[]} = {}
-const components: {[key: string]: string} = {}
+const components: {[key: string]: typeof defineAsyncComponent} = {}
 
 const modules = import.meta.glob('../sheets/*.md')
 
