@@ -57,8 +57,8 @@
 import { defineComponent, defineAsyncComponent } from 'vue'
 
 const sheets = []
-const sheetCategories = {}
-const components = {}
+const sheetCategories: {[key: string]: string[]} = {}
+const components: {[key: string]: string} = {}
 
 const modules = import.meta.glob('../sheets/*.md')
 

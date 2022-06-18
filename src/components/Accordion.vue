@@ -1,6 +1,6 @@
 <template>
   <div
-    class="accordion max-w-72 rounded overflow-hidden shadow-md mb-2"
+    class="accordion max-w-96 rounded overflow-hidden shadow-md mb-2"
     :style="`max-height:${maxHeight}px`"
   >
     <div
@@ -41,7 +41,7 @@ export default defineComponent({
       default: 'Accordion Title',
     },
   },
-  setup({ title }) {
+  setup() {
     const isOpen = ref(false)
     const accordionTitle = ref(null)
     const accordionBody = ref(null)
@@ -56,7 +56,7 @@ export default defineComponent({
       titleHeight = accordionTitle.value.scrollHeight
       maxHeight.value = titleHeight
     })
-    return { title, isOpen, accordionTitle, accordionBody, maxHeight }
+    return { isOpen, accordionTitle, accordionBody, maxHeight }
   },
 })
 </script>
