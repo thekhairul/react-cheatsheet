@@ -40,8 +40,7 @@
           :key="title"
           :title="title.split('-')[0]"
           :class="{
-            'outline-solid-purple-700':
-              searchQuery && title.match(new RegExp(searchQuery, 'gi')),
+            'outline-solid-purple-700': matchQuery(`${category}-${title}`),
           }"
         >
           <keep-alive>
@@ -81,7 +80,12 @@ export default defineComponent({
   components,
   setup() {
     const searchQuery = ref('')
-    return { sheetCategories, searchQuery }
+    const matchQuery = (title: string) => {
+      if (!searchQuery.value.trim()) return false
+      const titleStr = title.split('-').join(' ').toLowerCase()
+      return searchQuery.value && titleStr.includes(searchQuery.value.toLowerCase())
+    }
+    return { sheetCategories, searchQuery, matchQuery }
   },
 })
 </script>
