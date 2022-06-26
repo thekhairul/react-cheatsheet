@@ -19,7 +19,7 @@
         type="text"
         placeholder="Search by topic"
         class="
-          bg-purple-800 bg-white
+          bg-purple-800
           focus:outline-none
           px-4
           py-2
@@ -38,10 +38,9 @@
         <Accordion
           v-for="title in sheetCategories[category]"
           :key="title"
-          :title="title"
+          :title="title.split('-')[0]"
           :class="{
-            'hidden':
-              searchQuery && !title.includes(searchQuery),
+            'outline-solid-purple-700': matchQuery(`${category}-${title}`),
           }"
         >
           <keep-alive>
@@ -54,11 +53,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, defineComponent } from 'vue'
 
-const sheets = []
-const sheetCategories = {}
-const components = {}
+const sheets: string[] = []
+const sheetCategories: { [key: string]: string[] } = {}
+const components: { [key: string]: typeof defineAsyncComponent } = {}
 
 const modules = import.meta.glob('../sheets/*.md')
 
@@ -82,7 +81,14 @@ export default defineComponent({
   components,
   setup() {
     const searchQuery = ref('')
-    return { sheetCategories, searchQuery }
+    const matchQuery = (title: string) => {
+      if (!searchQuery.value.trim()) return false
+      const titleStr = title.split('-').join(' ').toLowerCase()
+      return (
+        searchQuery.value && titleStr.includes(searchQuery.value.toLowerCase())
+      )
+    }
+    return { sheetCategories, searchQuery, matchQuery }
   },
 })
 </script>
