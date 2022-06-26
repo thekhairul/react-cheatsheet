@@ -4,7 +4,7 @@
     :style="`max-height:${maxHeight}px`"
   >
     <div
-      ref="accordionTitle"
+      ref="accordionTitleRef"
       class="
         flex
         justify-between
@@ -17,7 +17,7 @@
       "
       @click="isOpen = !isOpen"
     >
-      <span> {{ title }} </span>
+      <span> {{ accordionTitle }} </span>
       <span class="text-2xl">{{ isOpen ? "-" : "+" }}</span>
     </div>
 
@@ -41,9 +41,9 @@ export default defineComponent({
       default: 'Accordion Title',
     },
   },
-  setup({ title }) {
+  setup(props) {
     const isOpen = ref(false)
-    const accordionTitle = ref(null)
+    const accordionTitleRef = ref(null)
     const accordionBody = ref(null)
     const maxHeight = ref(0)
     let titleHeight = 0
@@ -53,10 +53,10 @@ export default defineComponent({
         : titleHeight
     })
     onMounted(() => {
-      titleHeight = accordionTitle.value.scrollHeight
+      titleHeight = accordionTitleRef.value.scrollHeight
       maxHeight.value = titleHeight
     })
-    return { title, isOpen, accordionTitle, accordionBody, maxHeight }
+    return { accordionTitle: props.title, isOpen, accordionTitleRef, accordionBody, maxHeight }
   },
 })
 </script>

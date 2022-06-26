@@ -40,8 +40,8 @@
           :key="title"
           :title="title"
           :class="{
-            'outline-solid-purple-700':
-              searchQuery && title.includes(searchQuery),
+            'hidden':
+              searchQuery && !title.includes(searchQuery),
           }"
         >
           <keep-alive>
@@ -62,8 +62,9 @@ const components = {}
 
 const modules = import.meta.glob('../sheets/*.md')
 
-for (const path in modules)
-  sheets.push(path.replace('../sheets/', '').split('.')[0])
+Object.keys(modules).forEach((key) => {
+  sheets.push(key.replace('../sheets/', '').split('.')[0])
+})
 
 sheets.forEach((sheet) => {
   // Extract cheatsheet categories from filename
