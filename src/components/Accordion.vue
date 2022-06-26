@@ -40,17 +40,17 @@ export default defineComponent({
   },
   setup(props) {
     const isOpen = ref(false)
-    const accordionTitleRef = ref(null)
-    const accordionBody = ref(null)
+    const accordionTitleRef = ref<HTMLDivElement>()
+    const accordionBody = ref<HTMLDivElement>()
     const maxHeight = ref(0)
     let titleHeight = 0
     watch(isOpen, () => {
       maxHeight.value = isOpen.value
-        ? titleHeight + accordionBody.value.scrollHeight
+        ? titleHeight + accordionBody.value!.scrollHeight
         : titleHeight
     })
     onMounted(() => {
-      titleHeight = accordionTitleRef.value.scrollHeight
+      titleHeight = accordionTitleRef.value!.scrollHeight
       maxHeight.value = titleHeight
     })
     return {
